@@ -1,51 +1,79 @@
 name: Auto fetch SZVÖRs
-
-       # Controls when the workflow will run
-on:
-  # Triggers the workflow every 5 minutes
+'on':
   schedule:
-    - cron: "0 14 * */1 *"
-  workflow_dispatch:
-     # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+    - cron: 0 14 * */1 *
+  workflow_dispatch: null
 jobs:
-  # This workflow contains a single job called "cron"
   cron:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-           - name: Setup Java JDK
-             uses: actions/setup-java@v3.3.0
-             with:
-               # The Java version to set up. Takes a whole or semver Java version. See examples of supported syntax in README file
-               java-version: 17
-               # Java distribution. See the list of supported distributions in README file
-               distribution: temurin
-               # The package type (jdk, jre, jdk+fx, jre+fx)
-               java-package: jre
-             # Runs a single command using the runners shell
-           - name: checkout code           
-             uses: actions/checkout@v1
-           
-           - name: Get current date
-             id: date
-             run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
-           - name: Install dependencies
-             run: |
-              apt update&&apt install wget curl -y
-              wget "https://github.com/tabulapdf/tabula-java/releases/download/v1.0.5/tabula-1.0.5-jar-with-dependencies.jar"
-           - name: Fetch szvör pdfs
-             run: |
-              wget -l 1 -A pdf --mirror https://www.mavcsoport.hu/mav-start/bemutatkozas/belfoldi-utazas/vonatosszeallitas-szvor
-           - name: Extract csvs from the pdfs 
-             run: |  
-              java -jar tabula-1.0.5-jar-with-dependencies.jar -b www.mavcsoport.hu/sites/default/files/upload/page/ -f CSV -l -o csv 
-           - name: Move extracted files
-             run: |
-               mkdir csv
-               mv www.mavcsoport.hu/sites/default/files/upload/page/*.csv csv/
-           - uses: actions/upload-artifact@v3
-             with:
-               name: szvor-${{ steps.date.outputs.date }}
-               path: csv/
+      - name: Setup Java JDK
+        uses: actions/setup-java@v3.3.0
+        with:
+          java-version: 17
+          distribution: temurin
+          java-package: jre
+      - name: checkout code
+        uses: actions/checkout@v1
+      - name: Get current date
+        id: date
+        run: 'echo "::set-output name=date::$(date +''%Y-%m-%d'')"'
+      - name: Install dependencies
+        run: >
+          apt update&&apt install wget curl -y
+
+          wget
+          "https://github.com/tabulapdf/tabula-java/releases/download/v1.0.5/tabula-1.0.5-jar-with-dependencies.jar"
+      - name: Fetch szvör pdfs
+        run: >
+          wget -l 1 -A pdf --mirror
+          https://www.mavcsoport.hu/mav-start/bemutatkozas/belfoldi-utazas/vonatosszeallitas-szvor
+      - name: Extract csvs from the pdfs
+        run: >
+          java -jar tabula-1.0.5-jar-with-dependencies.jar -b
+          www.mavcsoport.hu/sites/default/files/upload/page/ -f CSV -l -o csv 
+      - name: Move extracted files
+        run: |
+          mkdir csv
+          mv www.mavcsoport.hu/sites/default/files/upload/page/*.csv csv/
+      - name: Rename files
+        run: |
+          for f in $(ls *.csv); do
+              dst=$(echo $f| sed 's/[0-9]*//g'|sed 's/_\.csv/\.csv/g')      
+              mv $f $dst                                                    
+          done
+      - uses: actions/upload-artifact@v3
+        with:
+          name: 'szvor-${{ steps.date.outputs.date }}'
+          path: csv/
+      - uses: EndBug/add-and-commit@v9 # You can change this to use a specific version.
+        with:
+           # The arguments for the `git add` command (see the paragraph below for more info)
+           # Default: '.'
+           add: 'csv'
+           # The name of the user that will be displayed as the author of the commit.
+           # Default: depends on the default_author input
+           author_name: SzVÖR collector
+
+           # The email of the user that will be displayed as the author of the commit.
+           # Default: depends on the default_author input
+           author_email: szvor@noreply.net
+           # Determines the way the action fills missing author name and email. Three options are available:
+           # - github_actor -> UserName <UserName@users.noreply.github.com>
+           # - user_info -> Your Display Name <your-actual@email.com>
+           # - github_actions -> github-actions <email associated with the github logo>
+           # Default: github_actor
+           default_author: github_actions
+
+           # The message for the commit.
+           # Default: 'Commit from GitHub Actions (name of the workflow)'
+           message: 'Update SzVÖRs ${{ steps.date.outputs.date }}'
+           # The way the action should handle pathspec errors from the add and remove commands. Three options are available:
+           # - ignore -> errors will be logged but the step won't fail
+           # - exitImmediately -> the action will stop right away, and the step will fail
+           # - exitAtEnd -> the action will go on, every pathspec error will be logged at the end, the step will fail.
+           # Default: ignore
+           pathspec_error_handling: ignore
+           # Whether to push the commit and, if any, its tags to the repo. It can also be used to set the git push arguments (see the paragraph below for more info)
+           # Default: true
+           push: true
