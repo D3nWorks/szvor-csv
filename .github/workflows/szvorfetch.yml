@@ -9,6 +9,12 @@ jobs:
   cron:
     runs-on: ubuntu-latest
     steps:
+      - name: Setup git
+        run: |
+          #git switch main
+          git config --global user.name "SzVÖR Updater"
+          git remote set-url --push origin https://d3n972:${GITHUB_TOKEN}@github.com/D3nWorks/szvor-csv.git
+          git checkout main
       - name: Checkout
         uses: actions/checkout@v3.0.0
       - name: Setup Java JDK
@@ -40,11 +46,6 @@ jobs:
         run: |
           mkdir csv
           mv www.mavcsoport.hu/sites/default/files/upload/page/*.csv csv/
-      - name: Setup git
-        run: |
-          #git switch main
-          git config --global user.name "SzVÖR Updater"
-          git remote set-url --push origin https://d3n972:${GITHUB_TOKEN}@github.com/D3nWorks/szvor-csv.git
       - name: Rename files
         run: |
           cd csv/
