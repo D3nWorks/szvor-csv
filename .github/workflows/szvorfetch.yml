@@ -30,7 +30,7 @@ jobs:
           "https://github.com/tabulapdf/tabula-java/releases/download/v1.0.5/tabula-1.0.5-jar-with-dependencies.jar"
       - name: Fetch szvör pdfs
         run: >
-          wget -l 1 -A pdf  --limit-rate=150k --mirror
+          wget -l 1 -A pdf  --limit-rate=250k --mirror
           https://www.mavcsoport.hu/mav-start/bemutatkozas/belfoldi-utazas/vonatosszeallitas-szvor
       - name: Extract csvs from the pdfs
         run: >
