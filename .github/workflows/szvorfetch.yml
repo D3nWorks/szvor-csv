@@ -51,6 +51,7 @@ jobs:
               git commit --allow-empty -m "$dst updated at: $updated_at"
           done
           git remote set-url --push origin https://${GITHUB_ACTOR}:${TOKEN}@github.com/D3nWorks/szvor-csv.git
+          git push -u origin main
       - uses: actions/upload-artifact@v3
         with:
           name: 'szvor-${{ steps.date.outputs.date }}'
