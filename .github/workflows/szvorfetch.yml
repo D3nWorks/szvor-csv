@@ -3,10 +3,14 @@ name: Auto fetch SZVÖRs
   schedule:
     - cron: 0 14 * */1 *
   workflow_dispatch: null
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   cron:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3.0.0
       - name: Setup Java JDK
         uses: actions/setup-java@v3.3.0
         with:
@@ -50,7 +54,7 @@ jobs:
               git add $dst 
               git commit --allow-empty -m "$dst updated at: $updated_at"
           done
-          git remote set-url --push origin https://d3n972:${TOKEN}@github.com/D3nWorks/szvor-csv.git
+          git remote set-url --push origin https://d3n972:${GITHUB_TOKEN}@github.com/D3nWorks/szvor-csv.git
           git push -u origin main
       - uses: actions/upload-artifact@v3
         with:
