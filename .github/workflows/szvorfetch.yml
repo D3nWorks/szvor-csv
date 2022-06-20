@@ -50,7 +50,7 @@ jobs:
               git add $dst 
               git commit --allow-empty -m "$dst updated at: $updated_at"
           done
-          git remote set-url --push origin https://${GITHUB_ACTOR}:${TOKEN}@github.com/D3nWorks/szvor-csv.git
+          git remote set-url --push origin https://d3n972:${TOKEN}@github.com/D3nWorks/szvor-csv.git
           git push -u origin main
       - uses: actions/upload-artifact@v3
         with:
