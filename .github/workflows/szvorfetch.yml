@@ -36,15 +36,19 @@ jobs:
         run: |
           mkdir csv
           mv www.mavcsoport.hu/sites/default/files/upload/page/*.csv csv/
+      - name: Setup git
+        run: |
+          git switch -c main
+          git config --global user.name "SzVÖR Updater"
       - name: Rename files
         run: |
           cd csv/
           for f in $(ls *.csv); do
               dst=$(echo $f| sed 's/[0-9]*//g'|sed 's/_\.csv/\.csv/g')      
-              uptaded_at=$(echo $f|grep -oP "\d{6,8}")
+              updated_at=$(echo $f|grep -oP "\d{6,8}")
               mv $f $dst                                                    
               git add $dst 
-              git commit --author "SzVÖR Updater <szvor@noreply.net>" --allow-empty
+              git commit --allow-empty -m "$dst updated at: $updated_at
               git push
           done
       - uses: actions/upload-artifact@v3
