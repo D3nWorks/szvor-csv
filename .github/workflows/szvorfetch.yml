@@ -50,7 +50,11 @@ jobs:
               git add $dst 
               git commit --allow-empty -m "$dst updated at: $updated_at"
           done
-          git push --set-upstream origin main
+          #git remote set-url --push origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v8
+        with:
+          author_name: SzVÖR Updater
       - uses: actions/upload-artifact@v3
         with:
           name: 'szvor-${{ steps.date.outputs.date }}'
