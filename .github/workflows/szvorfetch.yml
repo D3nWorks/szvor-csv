@@ -49,8 +49,8 @@ jobs:
               mv $f $dst                                                    
               git add $dst 
               git commit --allow-empty -m "$dst updated at: $updated_at"
-              git push
           done
+          git push --set-upstream origin main
       - uses: actions/upload-artifact@v3
         with:
           name: 'szvor-${{ steps.date.outputs.date }}'
