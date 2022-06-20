@@ -42,7 +42,7 @@ jobs:
           mv www.mavcsoport.hu/sites/default/files/upload/page/*.csv csv/
       - name: Setup git
         run: |
-          git switch -c main
+          #git switch main
           git config --global user.name "SzVÖR Updater"
       - name: Rename files
         run: |
