@@ -40,9 +40,6 @@ jobs:
           www.mavcsoport.hu/sites/default/files/upload/page/ -f CSV -l -o csv 
       - name: Move extracted files
         run: |
-          if [ ! -d "$DIRECTORY" ]; then
-            mkdir csv
-          fi
           mv www.mavcsoport.hu/sites/default/files/upload/page/*.csv csv/
       - name: Rename files
         run: |
