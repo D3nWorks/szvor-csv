@@ -28,7 +28,7 @@ jobs:
         run: 'echo "::set-output name=date::$(date +''%Y-%m-%d'')"'
       - name: Install dependencies
         run: >
-          apt update&&apt install wget curl -y
+          sudo apt update&&sudo apt install wget curl -y&&
           wget "https://github.com/tabulapdf/tabula-java/releases/download/v1.0.5/tabula-1.0.5-jar-with-dependencies.jar"
       - name: Fetch szvör pdfs
         run: >
