@@ -40,16 +40,16 @@ jobs:
           www.mavcsoport.hu/sites/default/files/upload/page/ -f CSV -l -o csv 
       - name: Move extracted files
         run: |
-          mv www.mavcsoport.hu/sites/default/files/upload/page/*.csv csv/
+         # mv www.mavcsoport.hu/sites/default/files/upload/page/*.csv csv/
       - name: Rename files
         run: |
-          ls -lah csv/
-          cd csv/
+          workdir=$(pwd)
+          cd www.mavcsoport.hu/sites/default/files/upload/page
           for f in $(ls *.csv); do
               dst=$(echo $f| sed 's/[0-9]*//g'|sed 's/_\.csv/\.csv/g')      
               updated_at=$(echo $f|grep -oP "\d{6,8}")
-              mv $f $dst                                                    
-              git add $dst 
+              mv $f $workdir/$dst                                                    
+              git add $workdir/$dst 
               git commit --allow-empty -m "$dst updated at: $updated_at"
           done
           git push -u origin main
