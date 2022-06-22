@@ -44,13 +44,14 @@ jobs:
       - name: Rename files
         run: |
           workdir=$(pwd)
-          cd www.mavcsoport.hu/sites/default/files/upload/page
+          cd www.mavcsoport.hu/sites/default/files/upload/page/
           for f in $(ls *.csv); do
               dst=$(echo $f| sed 's/[0-9]*//g'|sed 's/_\.csv/\.csv/g')      
               updated_at=$(echo $f|grep -oP "\d{6,8}")
-              mv $f $workdir/$dst                                                    
-              git add $workdir/$dst 
-              git commit --allow-empty -m "$dst updated at: $updated_at"
+              echo mv $f $workdir/$dst
+              #mv $f $workdir/$dst                                                    
+              #git add $workdir/$dst 
+              #git commit --allow-empty -m "$dst updated at: $updated_at"
           done
           git push -u origin main
       - uses: actions/upload-artifact@v3
