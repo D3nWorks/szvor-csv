@@ -43,7 +43,7 @@ jobs:
           mv www.mavcsoport.hu/sites/default/files/upload/page/*.csv csv/
       - name: Rename files
         run: |
-          ls -lah .
+          ls -lah csv/
           cd csv/
           for f in $(ls *.csv); do
               dst=$(echo $f| sed 's/[0-9]*//g'|sed 's/_\.csv/\.csv/g')      
