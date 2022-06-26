@@ -51,7 +51,7 @@ jobs:
               echo mv $f $workdir/$dst
               mv $f $workdir/csv/$dst                                                    
               git add $workdir/csv/$dst 
-              git commit --allow-empty -m "$dst updated at: $updated_at"
+              git commit -m "$dst updated at: $updated_at"
           done
           git push -u origin main
       - uses: actions/upload-artifact@v3
