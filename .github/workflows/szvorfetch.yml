@@ -41,6 +41,7 @@ jobs:
       - name: Move extracted files
         run: |
          # mv www.mavcsoport.hu/sites/default/files/upload/page/*.csv csv/
+           rm tabula-1.0.5-jar-with-dependencies.jar 
       - name: Rename files
         run: |
           workdir=$(pwd)
