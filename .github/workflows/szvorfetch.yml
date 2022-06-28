@@ -52,6 +52,7 @@ jobs:
               echo mv $f $workdir/$dst
               mv $f $workdir/csv/$dst                                                    
               git add $workdir/csv/$dst 
+              ls -lah ../../../../../
               git commit -m "$dst updated at: $updated_at"
           done
           git push -u origin main
