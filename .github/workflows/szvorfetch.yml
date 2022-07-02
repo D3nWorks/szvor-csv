@@ -50,7 +50,7 @@ jobs:
               dst=$(echo $f| sed 's/[0-9]*//g'|sed 's/_\.csv/\.csv/g')      
               updated_at=$(echo $f|grep -oP "\d{6,8}")
               mv $f $workdir/csv/$dst                                                    
-              git add -- $(git status --short |grep -P  '(??|A|M)' |cut -d' ' -f2| xargs -i sh -c "printf '%s\n' {}")
+              git add $workdir/csv/$dst
               git commit --allow-empty -m "$dst updated at: $updated_at"
           done
           git push -u origin main
