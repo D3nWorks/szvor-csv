@@ -46,7 +46,7 @@ jobs:
         run: |
           workdir=$(pwd)
           cd $workdir/csv
-          for f in $(ls *.csv); do
+          for f in $(find . -regextype egrep -regex "(.*)[-_]*[0-9]+.*"); do
               echo "File: " $f
               updated_at=$(echo $f|grep -oP "\d{6,8}")
               echo "updated: " $updated_at
