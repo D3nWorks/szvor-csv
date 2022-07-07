@@ -52,7 +52,7 @@ jobs:
               echo "dest:" $dst
               updated_at=$(echo $f|grep -oP "\d{6,8}")
               echo "updated: " $updated_at
-              mv $f $workdir/csv/$dst     
+              mv -f $f $workdir/csv/$dst     
               echo "moved file"
               git add $workdir/csv/$dst
               echo "git add"
