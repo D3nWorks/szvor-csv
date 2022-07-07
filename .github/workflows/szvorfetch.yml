@@ -47,11 +47,17 @@ jobs:
           workdir=$(pwd)
           cd $workdir/csv
           for f in $(ls *.csv); do
+              echo "File: " $f
               dst=$(echo $f| sed 's/[0-9]*//g'|sed 's/_\.csv/\.csv/g')      
+              echo "dest:" $dst
               updated_at=$(echo $f|grep -oP "\d{6,8}")
-              mv $f $workdir/csv/$dst                                                    
+              echo "updated: " $updated_at
+              mv $f $workdir/csv/$dst     
+              echo "moved file"
               git add $workdir/csv/$dst
+              echo "git add"
               git commit --allow-empty -m "$dst updated at: $updated_at"
+              echo "git commit"
           done
           git push -u origin main
       - uses: actions/upload-artifact@v3
