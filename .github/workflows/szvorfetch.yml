@@ -56,7 +56,7 @@ jobs:
               echo "moved file"
               git add $workdir/csv/$dst
               echo "git add"
-              git commit --allow-empty -m "$dst updated at: $updated_at"
+              git commit -m "$dst updated at: $updated_at"
               echo "git commit"
           done
           git push -u origin main
