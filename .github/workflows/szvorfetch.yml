@@ -51,7 +51,7 @@ jobs:
               echo "File: " $f
               updated_at=$(echo $f|grep -oP "\d{6,8}")
               echo "updated: " $updated_at
-              dst=$(echo $f| sed 's/[0-9]*//g'|sed 's/_\.csv/\.csv/g')      
+              dst=$(echo $f| sed 's/[0-9]*//g'|sed 's/_\.csv/\.csv/g'|sed 's/_\.csv/\.csv/g'|sed 's/.\/._//g')      
               echo "dest:" $dst
               mv -f $f $workdir/csv/$dst     
               rm -f $f
