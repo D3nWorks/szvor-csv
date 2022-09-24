@@ -57,10 +57,10 @@ jobs:
               rm -f $f
               echo "moved file"
               git add $workdir/csv/$dst
-              echo "git add"
-              git commit --allow-empty -m "$dst updated at: $updated_at"
-              echo "git commit"
           done
+          git add $workdir/csv/*
+          git commit --allow-empty -m "updated at: $updated_at"
+          echo "git commit"
           git push -u origin main
       - uses: actions/upload-artifact@v3
         with:
